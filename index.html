@@ -1,0 +1,38 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jalwa Wingo Predictor</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 30px; background: #f0f8ff; }
+    input, button { padding: 10px; margin: 10px; font-size: 16px; }
+    .result { margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>🎯 Jalwa Wingo Prediction</h1>
+  <input type="number" id="periodInput" placeholder="Enter Period Number" />
+  <button onclick="predict()">Predict</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+    async function predict() {
+      const period = document.getElementById('periodInput').value;
+      const response = await fetch('http://127.0.0.1:8000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ period_number: parseInt(period) })
+      });
+      const data = await response.json();
+      document.getElementById('output').innerHTML = `
+        <strong>Period:</strong> ${data.period}<br>
+        <strong>Number:</strong> ${data.predicted_number}<br>
+        <strong>Color:</strong> ${data.predicted_color}<br>
+        <strong>Big/Small:</strong> ${data.predicted_size}
+      `;
+    }
+  </script>
+</body>
+</html>
